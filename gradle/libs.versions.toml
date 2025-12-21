@@ -1,0 +1,21 @@
+[versions]
+
+jdkVersion = "21"
+koog = "0.5.4-SNAPSHOT"
+kotlin = "2.3.0"
+kotlinx-datetime = "0.7.1-0.6.x-compat"
+ktlint = "1.8.0"
+ktor = "3.3.3"
+
+[libraries]
+
+koog-agents-core = { module = "ai.koog:agents-core", version.ref = "koog" }
+koog-prompt-executor-llms-all = { module = "ai.koog:prompt-executor-llms-all", version.ref = "koog" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+ktlint-cli = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
+ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
+ktor-client-apache5 = { module = "io.ktor:ktor-client-apache5" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

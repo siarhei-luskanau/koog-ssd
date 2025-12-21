@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  JAVA_VERSION: 21
+  JAVA_DISTRIBUTION: 'temurin'
+
+jobs:
+
+  Koog:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v6
+
+      - name: Checkout koog
+        uses: actions/checkout@v6
+        with:
+          repository: JetBrains/koog
+          path: koog
+
+      - name: Checkout koog-models
+        uses: actions/checkout@v6
+        with:
+          repository: siarhei-luskanau/koog-models
+          path: koog-models
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Build and publish koog
+        run: ./gradlew -p koog publishToMavenLocal --stacktrace
+
+      - name: Build and publish koog-models
+        run: ./gradlew -p koog-models publishToMavenLocal --stacktrace
+
+      - run: docker compose up -d
+
+      - name: Launch runMain
+        run: ./gradlew runMain --stacktrace
+
+      - run: docker compose down
+        if: always()
+
+      - name: Collect generated files
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: files
+          path: |
+            files/
+          retention-days: 7
