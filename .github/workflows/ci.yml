@@ -20,12 +20,6 @@ jobs:
 
       - uses: actions/checkout@v6
 
-      - name: Checkout koog
-        uses: actions/checkout@v6
-        with:
-          repository: JetBrains/koog
-          path: koog
-
       - name: Checkout koog-models
         uses: actions/checkout@v6
         with:
@@ -38,9 +32,6 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
 
       - uses: gradle/actions/setup-gradle@v5
-
-      - name: Build and publish koog
-        run: ./gradlew -p koog publishToMavenLocal --stacktrace
 
       - name: Build and publish koog-models
         run: ./gradlew -p koog-models publishToMavenLocal --stacktrace
