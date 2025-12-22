@@ -3,11 +3,12 @@ package koog.ssd
 import ai.koog.prompt.dsl.prompt
 import ai.koog.prompt.executor.llms.SingleLLMPromptExecutor
 import ai.koog.prompt.executor.ollama.client.OllamaClient
+import ai.koog.prompt.llm.LLMCapability
+import ai.koog.prompt.llm.LLMProvider
+import ai.koog.prompt.llm.LLModel
 import ai.koog.prompt.message.AttachmentContent
 import ai.koog.prompt.message.ContentPart
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.runBlocking
-import sl.koog.models.AdditionalKoogModels
 import java.io.File
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -17,7 +18,20 @@ fun main(args: Array<String>) {
     runBlocking {
         val promptDirPath = args.firstOrNull() ?: "files"
         val promptDir = File(promptDirPath).also { it.mkdirs() }
-        val model = AdditionalKoogModels.Ollama.QWEN3_4B
+        val model =
+            // "https://ollama.com/library/qwen3"
+            LLModel(
+                provider = LLMProvider.Ollama,
+                id = "qwen3:4b",
+                capabilities =
+                    listOf(
+                        LLMCapability.Document,
+                        LLMCapability.Schema.JSON.Basic,
+                        LLMCapability.Temperature,
+                        LLMCapability.Tools,
+                    ),
+                contextLength = 256_000,
+            )
         val llmClient = OllamaClient()
         llmClient.getModelOrNull(model.id, pullIfMissing = true)
 
