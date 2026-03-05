@@ -1,7 +1,7 @@
 [versions]
 
 jdkVersion = "21"
-koog = "0.6.3"
+koog = "0.6.4"
 kotlin = "2.3.10"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
 ktlint = "1.8.0"
